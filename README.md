@@ -1,4 +1,9 @@
 # App Ref. Card 01
+# RefCard 01
+
+![pipeline status](https://gitlab.com/penjaloeung/m347-ref-card-01/badges/feature/add-author/pipeline.svg)
+
+Dies ist ein Beispielprojekt mit CI/CD Pipeline ...
 
 **App Ref. Card 01** is a standalone Spring Boot application that demonstrates how to package and run a Java web service in a Docker container.  
 It is used for training purposes in the M347 module at BBW.

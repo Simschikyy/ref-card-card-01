@@ -1,3 +1,84 @@
+# RefCard-01
+
+RefCard-01 is a Spring Boot application that allows users to manage and view reference cards for various programming languages.
+
+## Voraussetzungen
+
+- **Betriebssystem**: Das Projekt ist plattformunabhängig und kann auf Windows, macOS und Linux ausgeführt werden.
+- **Framework/Infrastruktur**: 
+  - Java 17 (oder höher)
+  - Maven (für das Build)
+  - Docker (optional, für den Container-Betrieb)
+- **Wissen**: Grundkenntnisse in Java und Spring Boot werden empfohlen.
+
+## Installation und Verwendung
+
+1. **Lokale Installation**
+
+   - Clone das Repository:
+     ```bash
+     git clone https://gitlab.com/deinBenutzername/RefCard-01.git
+     cd RefCard-01
+     ```
+
+   - Baue das Projekt mit Maven:
+     ```bash
+     mvn clean install
+     ```
+
+   - Starte die Anwendung:
+     ```bash
+     java -jar target/RefCard-01.jar
+     ```
+
+2. **Docker-Installation** (Optional)
+
+   - Baue das Docker-Image:
+     ```bash
+     docker build -t refcard-01 .
+     ```
+
+   - Starte den Docker-Container:
+     ```bash
+     docker run -p 8080:8080 refcard-01
+     ```
+
+3. **Beispielanwendung**
+
+   Sobald die Anwendung läuft, kannst du über den Browser auf `http://localhost:8080` zugreifen.
+
+## Lizenz
+
+Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # App Ref. Card 01
 Standalone Spring Boot Application

@@ -1,41 +1,30 @@
-
 # App Ref. Card 01
-Standalone Spring Boot Application
+
+**App Ref. Card 01** is a standalone Spring Boot application that demonstrates how to package and run a Java web service in a Docker container.  
+It is used for training purposes in the M347 module at BBW.
 
 ---
-title: App Ref. Card 01
-author: Rinaldo Lanza, BBW
-date: 12. Februar 2023
+
+**Author:** Rinaldo Lanza, BBW  
+**Date:** 12. Februar 2023  
+**RefCard Übersicht:** [M347 RefCard Overview](https://gitlab.com/bbwrl/m347-ref-card-overview)
+
 ---
 
+## 🔧 Voraussetzungen
 
-Link zur Übersicht:<br/>
-https://gitlab.com/bbwrl/m347-ref-card-overview
+- **Betriebssystem:** Windows, macOS oder Linux
+- **Java-Version:** Java 17
+- **Build-Tool:** Maven
+- **Container-Tool:** Docker
+- **Wissen:** Grundkenntnisse in Java, Maven und Docker
 
+---
 
-## Installation der benötigten Werkzeuge
+## 🚀 Installation und Verwendung
 
-Maven Tutorial for Beginners<br/>
-https://www.simplilearn.com/tutorials/maven-tutorial
+### 📦 Projekt lokal klonen
 
-
-
-### Projekt bauen und starten
-Die Ausführung der Befehle erfolgt im Projektordner
-Builden mit Maven<br/>
-```$ mvn package```
-
-Das Projekt wird gebaut und die entsprechende Jar-Datei im Ordner Target erstellt (Artefakt).
-Die erstellte Datei kann nun direkt mit Java gestartet werden.<br/>
-```$ java -jar target/app-refcard-01-0.0.1-SNAPSHOT.jar```
-
-Die App kann im Browser unter der URL http://localhost:8080 betrachtet werden.
-
-
-### Inbetriebnahme mit Docker Container
-folgt...
-
-
-
-
-
+```bash
+git clone https://gitlab.com/penjaloeung/m347-ref-card-01.git
+cd m347-ref-card-01

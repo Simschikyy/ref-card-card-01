@@ -1,0 +1,4 @@
+test-job:
+  script:
+    - echo "✅ My first GitLab CI/CD job!"
+    - date

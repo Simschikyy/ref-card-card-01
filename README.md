@@ -4,7 +4,7 @@ Standalone Spring Boot Application
 
 ---
 title: App Ref. Card 01
-author: Rinaldo Lanza, BBW
+author: Mika End, BBW
 date: 12. Februar 2023
 ---
 

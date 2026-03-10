@@ -4,9 +4,10 @@ dockerfile
 
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.log
+*.class
+.idea/
+.vscode/
 
 ### STS ###
 .apt_generated

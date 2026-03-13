@@ -1,41 +1,30 @@
+# m347-ref-card-01
 
-# App Ref. Card 01
-Standalone Spring Boot Application
+A Spring Boot reference application that allows students to practice containerization, build automation, and version control workflows.
 
----
-title: App Ref. Card 01
-author: Rinaldo Lanza, BBW
-date: 12. Februar 2023
----
+## Prerequisites
 
+- **OS:** Windows, macOS or Linux
+- **Java:** 21 or higher
+- **Maven:** 3.8+ (or use the included Maven Wrapper `mvnw`)
+- **Docker:** (optional, for container builds)
 
-Link zur Übersicht:<br/>
-https://gitlab.com/bbwrl/m347-ref-card-overview
+## Installation
+```bash
+git clone https://gitlab.com/lokane8957/m347-ref-card-01.git
+cd m347-ref-card-01
+./mvnw package
+java -jar target/*.jar
+```
 
+The application starts on http://localhost:8080.
 
-## Installation der benötigten Werkzeuge
+## Docker
+```bash
+docker build -t ref-card-01 .
+docker run -p 8080:8080 ref-card-01
+```
 
-Maven Tutorial for Beginners<br/>
-https://www.simplilearn.com/tutorials/maven-tutorial
+## Author
 
-
-
-### Projekt bauen und starten
-Die Ausführung der Befehle erfolgt im Projektordner
-Builden mit Maven<br/>
-```$ mvn package```
-
-Das Projekt wird gebaut und die entsprechende Jar-Datei im Ordner Target erstellt (Artefakt).
-Die erstellte Datei kann nun direkt mit Java gestartet werden.<br/>
-```$ java -jar target/app-refcard-01-0.0.1-SNAPSHOT.jar```
-
-Die App kann im Browser unter der URL http://localhost:8080 betrachtet werden.
-
-
-### Inbetriebnahme mit Docker Container
-folgt...
-
-
-
-
-
+Ledion Dervishi - BBW

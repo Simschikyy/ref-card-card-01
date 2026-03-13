@@ -5,7 +5,7 @@ A Spring Boot reference application that allows students to practice containeriz
 ## Prerequisites
 
 - **OS:** Windows, macOS or Linux
-- **Java:** 21 or higher
+- **Java:** 17 or higher
 - **Maven:** 3.8+ (or use the included Maven Wrapper `mvnw`)
 - **Docker:** (optional, for container builds)
 

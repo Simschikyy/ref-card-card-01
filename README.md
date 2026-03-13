@@ -4,8 +4,10 @@ Standalone Spring Boot Application
 
 ---
 
-Titel: App Ref. Card 01
+Titel: App Ref. Card 01 <br>
 Autor: Tiago Araujo Rodrigues
+
+
 Original Werk: Rinaldo Lanza, BBW
 Datum: 13.03.2026
 

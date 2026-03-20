@@ -34,4 +34,47 @@ Datum: 13.03.2026
     cd m-347-ref-card-01-tiago-araujo-rodrigues/
     mvn package
     cd target/
+    java -jar target/app-refcard-01-0.0.1-SNAPSHOT.jar
+```
+
+### Option 2: Installation via Docker (Empfohlen)
+
+Stellen Sie sicher, dass Ihr `dockerfile` die moderne, schlanke Java 21 Version nutzt (z. B. `FROM eclipse-temurin:21-jdk-jammy`).
+
+1. Bauen Sie das Docker-Image aus dem Projektverzeichnis heraus:
+   
+   ```Bash
+   docker build -t ref-card-1 .
+   ```
+
+2. Starten Sie den Docker-Container und mappen Sie den Port 8080:
+   
+   ```Bash
+   docker run -p 8080:8080 ref-card-1
+   ```
+
+### Verwendung / Beispiele
+
+Sobald die Anwendung (lokal oder im Container) läuft, ist sie über den Port `8080` erreichbar.
+
+**Beispiel 1: Web-Interface (Hello-World)** Rufen Sie in Ihrem Webbrowser die folgende Adresse auf:
+
+```Plaintext
+http://localhost:8080/
+```
+
+*Ausgabe:* Eine Webseite wird geladen, die den einfachen Text `IP Address (Server): [Ihre aktuelle IP]` anzeigt.
+
+**Beispiel 2: REST-API abfragen (Fortgeschritten)** Für die Nutzung in anderen Programmen können Sie die REST-API abfragen, beispielsweise mit `curl` im Terminal:
+
+```Bash
+curl http://localhost:8080/api
+```
+
+*Ausgabe:* Sie erhalten eine saubere JSON-Antwort mit der IP-Adresse des Servers:
+
+```JSON
+{
+  "text": "Application Ref. Card 01 - API hello - Server IP Address: 172.17.0.2"
+}
 ```

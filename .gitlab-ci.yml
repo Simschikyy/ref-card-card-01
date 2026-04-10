@@ -1,4 +1,6 @@
-test-job:
+build-job:
+  stage: build
   script:
-    - echo "This is my first job!"
-    - date
+    - echo "Starte den automatischen Container-Build..."
+    - docker build -t mein-refcard-app .
+    - echo "Build erfolgreich abgeschlossen!"

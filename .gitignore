@@ -35,3 +35,31 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+
+
+
+
+
+
+# Java & Maven
+*.class
+*.jar
+*.war
+*.ear
+target/
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+
+
+

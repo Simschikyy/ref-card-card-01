@@ -1,0 +1,27 @@
+stages:
+  - build-java
+  - build-docker
+
+# Phase 1: Java-Anwendung kompilieren
+compile-job:
+  stage: build-java
+  image: maven:3.9-eclipse-temurin-21 # Verwende ein Image mit Maven und Java 21
+  script:
+    - echo "Kompiliere die Java-Anwendung..."
+    - mvn clean package
+  artifacts:
+    paths:
+      - target/*.jar # Speichere die generierte .jar Datei, damit der nächste Job sie nutzen kann
+
+# Phase 2: Docker Image bauen
+docker-job:
+  stage: build-docker
+  services:
+    - docker:23.0.4-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - echo "Starte den automatischen Container-Build..."
+    - docker build -t mein-refcard-app .
+    - echo "Build erfolgreich abgeschlossen!"

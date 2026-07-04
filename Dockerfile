@@ -1,10 +1,2 @@
-FROM maven:3.9-eclipse-temurin-17-alpine as builder
-WORKDIR /app
-COPY . .
-RUN mvn package -DskipTests
-
-FROM ubuntu/jre:17-22.04_edge
-WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+FROM nginx:alpine-slim
+RUN echo "M347 Ref Card - Claudio Perini" > /usr/share/nginx/html/index.html

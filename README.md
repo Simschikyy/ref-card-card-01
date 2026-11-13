@@ -33,9 +33,11 @@ Die App kann im Browser unter der URL http://localhost:8080 betrachtet werden.
 
 
 ### Inbetriebnahme mit Docker Container
-folgt...
+Das Image wird bei jedem Push auf `main` von GitHub Actions gebaut, getestet und
+nach Docker Hub sowie ghcr.io gepusht (`.github/workflows/ci-cd.yml`).
 
+```
+docker run -d -p 8080:8080 --name refcard01 <dockerhub-user>/refcard01:latest
+```
 
-
-
-
+Die App ist danach unter http://localhost:8080 erreichbar.

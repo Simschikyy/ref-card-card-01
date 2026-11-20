@@ -1,0 +1,108 @@
+name: CI/CD RefCard01 nach AWS (ECR + ECS Fargate)
+
+# Wann läuft die Pipeline?
+on:
+  push:
+    branches: [main]     # bei jedem Push auf main
+  workflow_dispatch:      # und manuell über den Button "Run workflow"
+
+# Benötigte Repository-Secrets (Settings -> Secrets and variables -> Actions):
+#   AWS_ACCOUNT_ID  numerische Account-ID, z. B. 123456789012
+#   AWS_REGION      us-east-1
+#   ECR_TOKEN       Ausgabe von: aws ecr get-login-password --region us-east-1
+#                   (läuft nach ca. 12 Stunden ab und muss dann erneuert werden)
+#
+# Optional für das automatische "Force new deployment" (Aufgabe 3):
+#   Secrets:   AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
+#   Variables: ECS_CLUSTER, ECS_SERVICE
+# Fehlen diese, wird der Deploy-Schritt übersprungen und man klickt
+# "Force new deployment" von Hand in der AWS-Konsole.
+
+env:
+  ECR_REPOSITORY: refcard01   # Name des Repositorys in AWS ECR
+
+jobs:
+  # ---------- CI: bauen und testen ----------
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: JDK 21 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Mit Maven bauen und Unit-Tests ausführen
+        run: mvn -B verify
+
+  # ---------- CD: Image bauen, prüfen, nach ECR pushen, ECS aktualisieren ----------
+  ecr:
+    needs: test            # läuft nur, wenn der Job "test" grün ist
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_TOKEN: ${{ secrets.ECR_TOKEN }}
+      # nur für den optionalen Deploy-Schritt (AWS CLI)
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+    steps:
+      - name: Prüfen, ob die AWS-Secrets gesetzt sind
+        run: |
+          missing=""
+          [ -z "$AWS_ACCOUNT_ID" ] && missing="$missing AWS_ACCOUNT_ID"
+          [ -z "$AWS_REGION" ]     && missing="$missing AWS_REGION"
+          [ -z "$ECR_TOKEN" ]      && missing="$missing ECR_TOKEN"
+          if [ -n "$missing" ]; then
+            echo "::error::Fehlende Secrets:$missing"
+            exit 1
+          fi
+          echo "ECR_REGISTRY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com" >> "$GITHUB_ENV"
+
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Image bauen
+        run: docker build -t "$ECR_REPOSITORY:test" .
+
+      - name: Image testen (Container starten und Webseite abrufen)
+        run: |
+          docker run -d --name refcard01 -p 8080:8080 "$ECR_REPOSITORY:test"
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8080/ | grep -q "Application Ref. Card 01"; then
+              echo "Container antwortet korrekt."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Container hat nicht rechtzeitig geantwortet."
+          docker logs refcard01
+          exit 1
+
+      - name: Bei AWS ECR anmelden
+        # Benutzername ist immer "AWS", das Passwort ist das ECR-Token (über stdin).
+        run: echo "$ECR_TOKEN" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+
+      - name: Image taggen und nach ECR pushen
+        run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          for tag in latest "$SHORT_SHA"; do
+            docker tag "$ECR_REPOSITORY:test" "$ECR_REGISTRY/$ECR_REPOSITORY:$tag"
+            docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$tag"
+          done
+
+      - name: ECS-Service neu ausrollen (Force new deployment, optional)
+        # Läuft nur, wenn AWS-Zugangsdaten und Cluster/Service-Namen hinterlegt sind.
+        if: env.AWS_ACCESS_KEY_ID != '' && vars.ECS_CLUSTER != '' && vars.ECS_SERVICE != ''
+        run: |
+          aws ecs update-service \
+            --cluster "${{ vars.ECS_CLUSTER }}" \
+            --service "${{ vars.ECS_SERVICE }}" \
+            --force-new-deployment \
+            --query 'service.deployments[0].[status,taskDefinition]' --output text
